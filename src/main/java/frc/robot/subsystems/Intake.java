@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase{
     private DoubleSolenoid intake;
     public static final int FORWARD_ID = 0;
     public static final int REVERSE_ID = 0;
-
+    private boolean intaking;
     private Intake(){
         motor = new HSTalon(MOTER_ID);
         motor.setInverted(INVERT);
@@ -28,9 +28,16 @@ public class Intake extends SubsystemBase{
         return motor;
     }
     public void setoutput(double output){
+        if(output > 0.1){
+            intaking = true;
+        }
+        else
+        intaking = false;
         motor.set(ControlMode.PercentOutput, output);
     }
-
+    public boolean isIntaking(){
+        return intaking;
+    }
     public void toggle(){
         if(intake.get() == Value.kForward){
         intake.set(Value.kReverse);
